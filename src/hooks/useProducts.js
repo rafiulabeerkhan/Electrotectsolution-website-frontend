@@ -9,7 +9,7 @@ export const useProducts = () => {
   
   const { accessToken } = useAuthStore();
   const { setTotalData } = usePaginationStore();
-  const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+  const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5002/api";
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);

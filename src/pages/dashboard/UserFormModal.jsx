@@ -11,9 +11,15 @@ const UserFormModal = ({
   modalMode = "create",
 }) => {
   const isView = modalMode === "view";
-  const title = modalMode === "create" ? "Add New User" : modalMode === "edit" ? "Edit User" : "View User";
-  
-  const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+  const title =
+    modalMode === "create"
+      ? "Add New User"
+      : modalMode === "edit"
+        ? "Edit User"
+        : "View User";
+
+  const apiUrl =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5002/api";
   const baseUrl = apiUrl.replace(/\/api\/?$/, "");
 
   return (
@@ -28,7 +34,12 @@ const UserFormModal = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <div className="mb-2 block">
-              <label htmlFor="name" className="text-sm font-medium text-gray-900 dark:text-white">Full Name</label>
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Full Name
+              </label>
             </div>
             <TextInput
               id="name"
@@ -39,10 +50,15 @@ const UserFormModal = ({
               placeholder="John Doe"
             />
           </div>
-          
+
           <div>
             <div className="mb-2 block">
-              <label htmlFor="email" className="text-sm font-medium text-gray-900 dark:text-white">Email Address</label>
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Email Address
+              </label>
             </div>
             <TextInput
               id="email"
@@ -59,7 +75,12 @@ const UserFormModal = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <div className="mb-2 block">
-              <label htmlFor="role" className="text-sm font-medium text-gray-900 dark:text-white">Role</label>
+              <label
+                htmlFor="role"
+                className="text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Role
+              </label>
             </div>
             <Select
               id="role"
@@ -75,7 +96,12 @@ const UserFormModal = ({
 
           <div>
             <div className="mb-2 block">
-              <label htmlFor="phone_number" className="text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+              <label
+                htmlFor="phone_number"
+                className="text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Phone Number
+              </label>
             </div>
             <TextInput
               id="phone_number"
@@ -90,8 +116,13 @@ const UserFormModal = ({
         {!isView && (
           <div>
             <div className="mb-2 block">
-              <label htmlFor="password" className="text-sm font-medium text-gray-900 dark:text-white">
-                {modalMode === "edit" ? "Password (leave blank to keep)" : "Password"}
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-900 dark:text-white"
+              >
+                {modalMode === "edit"
+                  ? "Password (leave blank to keep)"
+                  : "Password"}
               </label>
             </div>
             <TextInput
@@ -107,33 +138,48 @@ const UserFormModal = ({
 
         <div>
           <div className="mb-2 block">
-            <label htmlFor="signature_photo" className="text-sm font-medium text-gray-900 dark:text-white">Signature Photo</label>
+            <label
+              htmlFor="signature_photo"
+              className="text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Signature Photo
+            </label>
           </div>
           <div className="flex flex-col gap-4">
-             {formData.signature_photo ? (
-                <div>
-                   <img 
-                     src={typeof formData.signature_photo === 'string' 
-                       ? `${baseUrl}${formData.signature_photo.replace(/\\/g, '/').startsWith('/') ? '' : '/'}${formData.signature_photo.replace(/\\/g, '/')}` 
-                       : URL.createObjectURL(formData.signature_photo)} 
-                     alt="Signature" 
-                     className="max-h-32 object-contain rounded border border-gray-200" 
-                   />
-                </div>
-             ) : (
-                isView && <p className="text-sm text-gray-500">No signature photo uploaded.</p>
-             )}
+            {formData.signature_photo ? (
+              <div>
+                <img
+                  src={
+                    typeof formData.signature_photo === "string"
+                      ? `${baseUrl}${formData.signature_photo.replace(/\\/g, "/").startsWith("/") ? "" : "/"}${formData.signature_photo.replace(/\\/g, "/")}`
+                      : URL.createObjectURL(formData.signature_photo)
+                  }
+                  alt="Signature"
+                  className="max-h-32 object-contain rounded border border-gray-200"
+                />
+              </div>
+            ) : (
+              isView && (
+                <p className="text-sm text-gray-500">
+                  No signature photo uploaded.
+                </p>
+              )
+            )}
 
-             {!isView && (
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">{formData.signature_photo ? "Upload new photo to replace:" : "Upload photo:"}</p>
-                  <FileInput
-                     id="signature_photo"
-                     onChange={handleFileChange}
-                     accept="image/*"
-                  />
-                </div>
-             )}
+            {!isView && (
+              <div>
+                <p className="text-xs text-gray-500 mb-1">
+                  {formData.signature_photo
+                    ? "Upload new photo to replace:"
+                    : "Upload photo:"}
+                </p>
+                <FileInput
+                  id="signature_photo"
+                  onChange={handleFileChange}
+                  accept="image/*"
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -142,7 +188,10 @@ const UserFormModal = ({
             {isView ? "Close" : "Cancel"}
           </Button>
           {!isView && (
-            <Button type="submit" className="bg-primary-600 hover:bg-primary-700">
+            <Button
+              type="submit"
+              className="bg-primary-600 hover:bg-primary-700"
+            >
               {modalMode === "create" ? "Create User" : "Save Changes"}
             </Button>
           )}

@@ -6,30 +6,35 @@ export const useDocuments = () => {
   const [documents, setDocuments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { accessToken } = useAuthStore();
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
 
-  const fetchDocuments = useCallback(async (type = "") => {
-    setIsLoading(true);
-    try {
-      const url = type ? `${API_URL}/documents?type=${type}` : `${API_URL}/documents`;
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const data = await response.json();
-      if (data.success) {
-        setDocuments(data.data);
-      } else {
-        toast.error(data.message || "Failed to fetch documents");
+  const fetchDocuments = useCallback(
+    async (type = "") => {
+      setIsLoading(true);
+      try {
+        const url = type
+          ? `${API_URL}/documents?type=${type}`
+          : `${API_URL}/documents`;
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const data = await response.json();
+        if (data.success) {
+          setDocuments(data.data);
+        } else {
+          toast.error(data.message || "Failed to fetch documents");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error connecting to server");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error connecting to server");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [accessToken, API_URL]);
+    },
+    [accessToken, API_URL],
+  );
 
   const createDocument = async (documentData) => {
     setIsLoading(true);
@@ -139,22 +144,26 @@ export const useDocuments = () => {
 
   const downloadDocument = async (documentId, format) => {
     try {
-      const response = await fetch(`${API_URL}/documents/${documentId}/${format}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${API_URL}/documents/${documentId}/${format}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
-      
+      );
+
       if (!response.ok) {
         toast.error(`Failed to download ${format.toUpperCase()}`);
         return;
       }
-      
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      const extension = format === 'pdf' ? 'pdf' : (format === 'word' ? 'docx' : 'xlsx');
+      const extension =
+        format === "pdf" ? "pdf" : format === "word" ? "docx" : "xlsx";
       a.download = `Document_${documentId}.${extension}`;
       document.body.appendChild(a);
       a.click();
@@ -175,16 +184,16 @@ export const useDocuments = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      
+
       if (!response.ok) {
         toast.error("Failed to load PDF preview");
         return;
       }
-      
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      
+      window.open(url, "_blank");
+
       setTimeout(() => window.URL.revokeObjectURL(url), 1000);
     } catch (error) {
       console.error(error);

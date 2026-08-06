@@ -8,7 +8,7 @@ export const useClients = () => {
   const [error, setError] = useState(null);
   
   const { accessToken } = useAuthStore();
-  const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+  const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5002/api";
 
   const fetchClients = useCallback(async () => {
     try {
