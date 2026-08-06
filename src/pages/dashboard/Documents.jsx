@@ -92,6 +92,11 @@ const Documents = () => {
     "Grand Total": "formatted_total",
   };
 
+  const getFileName = (row) => {
+    const baseName = row.bill_no ? `${row.bill_no}_${row.client_name || "Document"}` : `Document_${row.id}`;
+    return baseName.replace(/[^a-zA-Z0-9_-]/g, '_');
+  };
+
   const actionButtonsConfig = [
     {
       icon: (
@@ -115,7 +120,7 @@ const Documents = () => {
         </span>
       ),
       show: () => true,
-      onClick: (row) => downloadDocument(row.id, "pdf"),
+      onClick: (row) => downloadDocument(row.id, "pdf", getFileName(row)),
     },
     {
       icon: (
@@ -127,7 +132,7 @@ const Documents = () => {
         </span>
       ),
       show: () => true,
-      onClick: (row) => downloadDocument(row.id, "word"),
+      onClick: (row) => downloadDocument(row.id, "word", getFileName(row)),
     },
     {
       icon: (
@@ -139,7 +144,7 @@ const Documents = () => {
         </span>
       ),
       show: () => true,
-      onClick: (row) => downloadDocument(row.id, "excel"),
+      onClick: (row) => downloadDocument(row.id, "excel", getFileName(row)),
     },
     {
       icon: (

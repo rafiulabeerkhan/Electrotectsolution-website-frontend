@@ -142,7 +142,7 @@ export const useDocuments = () => {
     }
   };
 
-  const downloadDocument = async (documentId, format) => {
+  const downloadDocument = async (documentId, format, customFileName = "") => {
     try {
       const response = await fetch(
         `${API_URL}/documents/${documentId}/${format}`,
@@ -164,7 +164,7 @@ export const useDocuments = () => {
       a.href = url;
       const extension =
         format === "pdf" ? "pdf" : format === "word" ? "docx" : "xlsx";
-      a.download = `Document_${documentId}.${extension}`;
+      a.download = customFileName ? `${customFileName}.${extension}` : `Document_${documentId}.${extension}`;
       document.body.appendChild(a);
       a.click();
       setTimeout(() => {
